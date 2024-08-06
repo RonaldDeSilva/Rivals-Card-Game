@@ -5,13 +5,15 @@ public class CardBehavior : MonoBehaviour
     private bool FollowMouse = false;
     public float[] Xvals;
     public int CardNum;
-    private GameObject InPlay;
+    private GameObject InHand;
     private GameObject Discard;
+    private GameObject Controller;
 
     void Start()
     {
-        InPlay = GameObject.Find("InPlay");
+        InHand = GameObject.Find("InPlay");
         Discard = GameObject.Find("Discard");
+        Controller = GameObject.Find("GameController");
     }
 
     void Update()
@@ -26,7 +28,7 @@ public class CardBehavior : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (transform.parent.name == InPlay.name)
+        if (transform.parent.name == InHand.name)
         {
             if (FollowMouse)
             {
@@ -42,6 +44,10 @@ public class CardBehavior : MonoBehaviour
                     transform.parent = Discard.transform;
                     transform.localPosition = new Vector3(0,0,0);
                     CardNum = 0;
+                    if (InHand.transform.childCount == 0)
+                    {
+                        Controller.GetComponent<GameController>().DrawCardsToHand();
+                    }
                 }
                 else
                 {
